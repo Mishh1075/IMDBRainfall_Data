@@ -20,8 +20,8 @@ The model predicts rainfall on the `31st` day using the other available features
 From this folder, run:
 
 ```bash
-../.venv/bin/python train_model.py
-../.venv/bin/python evaluate.py
+python3 train_model.py
+python3 evaluate.py
 cat rainfall_model_metrics.json
 ```
 

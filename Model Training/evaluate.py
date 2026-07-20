@@ -1,21 +1,25 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 import joblib
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from feature_engineering import add_feature_engineering
 from preprocess import clean_data, load_data, split_features_target
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-MODEL_PATH = PROJECT_ROOT / "models" / "rainfall_model.pkl"
+DATA_PATH = PROJECT_ROOT / "data" / "Indian Rainfall Dataset District-wise Daily Measurements.csv"
+MODEL_PATH = PROJECT_ROOT / "rainfall_model.pkl"
 
 
 def main():
     model = joblib.load(MODEL_PATH)
-    df = add_feature_engineering(clean_data(load_data()))
+    df = add_feature_engineering(clean_data(load_data(DATA_PATH)))
     features, target = split_features_target(df, target_column="31st")
 
     sample_predictions = model.predict(features.head(5))

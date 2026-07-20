@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import math
+import sys
 from pathlib import Path
 
 import joblib
@@ -14,14 +15,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
+PROJECT_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
+
 from feature_engineering import add_feature_engineering
 from preprocess import clean_data, load_data, split_features_target
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-MODELS_DIR = PROJECT_ROOT / "models"
-MODEL_PATH = MODELS_DIR / "rainfall_model.pkl"
-METRICS_PATH = MODELS_DIR / "rainfall_model_metrics.json"
+DATA_PATH = PROJECT_ROOT / "data" / "Indian Rainfall Dataset District-wise Daily Measurements.csv"
+MODEL_PATH = PROJECT_ROOT / "rainfall_model.pkl"
+METRICS_PATH = PROJECT_ROOT / "rainfall_model_metrics.json"
 
 
 def build_preprocessor(feature_frame):
@@ -61,7 +64,7 @@ def evaluate_model(model, x_test, y_test):
 
 
 def main():
-    df = load_data()
+    df = load_data(DATA_PATH)
     df = clean_data(df)
     df = add_feature_engineering(df)
 
